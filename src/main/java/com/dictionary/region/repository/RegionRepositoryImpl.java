@@ -1,13 +1,16 @@
 package com.dictionary.region.repository;
 
 import com.dictionary.region.entity.Region;
+import com.dictionary.region.exception.SqlProcessingException;
 import org.springframework.stereotype.Repository;
 
-import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PrimitiveIterator;
 
 @Repository
 public class RegionRepositoryImpl implements RegionRepository {
@@ -27,7 +30,7 @@ public class RegionRepositoryImpl implements RegionRepository {
 
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SqlProcessingException(e);
         }
     }
 
@@ -47,7 +50,7 @@ public class RegionRepositoryImpl implements RegionRepository {
             region.setCode(results.getInt(2));
             return region;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SqlProcessingException(e);
         }
     }
 
@@ -58,7 +61,7 @@ public class RegionRepositoryImpl implements RegionRepository {
             statement.setLong(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SqlProcessingException(e);
         }
     }
 
@@ -75,7 +78,7 @@ public class RegionRepositoryImpl implements RegionRepository {
                 regions.add(region);
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SqlProcessingException(e);
         }
         return regions;
     }

@@ -1,6 +1,7 @@
 package com.dictionary.region.service;
 
 import com.dictionary.region.entity.Region;
+import com.dictionary.region.exception.RegionNotFoundException;
 import com.dictionary.region.repository.RegionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,10 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     public Region findById(Long id) {
+        Region region = regionRepository.findById(id);
+        if (region == null) {
+            throw new RegionNotFoundException();
+        }
         return regionRepository.findById(id);
     }
 
