@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5434/regionDb
+    username: postgres
+    password: root
+  liquibase:
+    change-log: classpath:liquibase/changelog-master.yaml
+

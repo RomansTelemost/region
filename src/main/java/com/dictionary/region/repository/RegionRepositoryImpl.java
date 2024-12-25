@@ -4,8 +4,8 @@ import com.dictionary.region.entity.Region;
 import com.dictionary.region.exception.SqlProcessingException;
 import org.springframework.stereotype.Repository;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,9 +20,15 @@ public class RegionRepositoryImpl implements RegionRepository {
     private final static String DELETE_BY_ID = "DELETE FROM region where code = ?";
     private final static String GET_ALL_REGION = "SELECT * FROM region";
 
+    private final DataSource dataSource;
+
+    public RegionRepositoryImpl(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
+
     @Override
     public void save(Region region) {
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_REGION)) {
 
             statement.setString(1, region.getName());
@@ -36,7 +42,7 @@ public class RegionRepositoryImpl implements RegionRepository {
 
     @Override
     public Region findById(Long id) {
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_REGION)) {
             statement.setLong(1, id);
 
@@ -56,7 +62,7 @@ public class RegionRepositoryImpl implements RegionRepository {
 
     @Override
     public void deleteById(Long id) {
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID)) {
             statement.setLong(1, id);
             statement.executeUpdate();
@@ -68,7 +74,7 @@ public class RegionRepositoryImpl implements RegionRepository {
     @Override
     public List<Region> findAll() {
         List<Region> regions = new ArrayList<>();
-        try (Connection connection = getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_REGION)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -81,11 +87,5 @@ public class RegionRepositoryImpl implements RegionRepository {
             throw new SqlProcessingException(e);
         }
         return regions;
-    }
-
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(
-                "jdbc:postgresql://localhost:5434/regionDb",
-                "postgres", "root");
     }
 }
