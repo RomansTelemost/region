@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class RegionRepositoryImpl implements RegionRepository {
@@ -41,20 +42,20 @@ public class RegionRepositoryImpl implements RegionRepository {
     }
 
     @Override
-    public Region findById(Long id) {
+    public Optional<Region> findById(Long id) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(GET_REGION)) {
             statement.setLong(1, id);
 
             ResultSet results = statement.executeQuery();
             if (!results.next()) {
-                return null;
+                return Optional.empty();
             }
 
             Region region = new Region();
             region.setName(results.getString(1));
             region.setCode(results.getInt(2));
-            return region;
+            return Optional.of(region);
         } catch (SQLException e) {
             throw new SqlProcessingException(e);
         }

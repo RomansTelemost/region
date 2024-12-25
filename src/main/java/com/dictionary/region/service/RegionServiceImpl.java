@@ -21,11 +21,7 @@ public class RegionServiceImpl implements RegionService {
 
     @Override
     public Region findById(Long id) {
-        Region region = regionRepository.findById(id);
-        if (region == null) {
-            throw new RegionNotFoundException();
-        }
-        return regionRepository.findById(id);
+        return regionRepository.findById(id).orElseThrow(RegionNotFoundException::new);
     }
 
     @Override
