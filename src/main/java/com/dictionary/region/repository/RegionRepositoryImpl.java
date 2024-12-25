@@ -1,0 +1,88 @@
+package com.dictionary.region.repository;
+
+import com.dictionary.region.entity.Region;
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PrimitiveIterator;
+
+@Repository
+public class RegionRepositoryImpl implements RegionRepository {
+
+    private final static String INSERT_REGION = "INSERT INTO region(name, code) VALUES (?, ?)";
+    private final static String GET_REGION = "SELECT * FROM region WHERE code = ?";
+    private final static String DELETE_BY_ID = "DELETE FROM region where code = ?";
+    private final static String GET_ALL_REGION = "SELECT * FROM region";
+
+    @Override
+    public void save(Region region) {
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(INSERT_REGION)) {
+
+            statement.setString(1, region.getName());
+            statement.setInt(2, region.getCode());
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Region findById(Long id) {
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_REGION)) {
+            statement.setLong(1, id);
+
+            ResultSet results = statement.executeQuery();
+            if (!results.next()) {
+                return null;
+            }
+
+            Region region = new Region();
+            region.setName(results.getString(1));
+            region.setCode(results.getInt(2));
+            return region;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_BY_ID)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<Region> findAll() {
+        List<Region> regions = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_REGION)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Region region = new Region();
+                region.setName(resultSet.getString(1));
+                region.setCode(resultSet.getInt(2));
+                regions.add(region);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return regions;
+    }
+
+    private Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5434/regionDb",
+                "postgres", "root");
+    }
+}
