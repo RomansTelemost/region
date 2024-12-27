@@ -1,5 +1,6 @@
 package com.dictionary.region.controller;
 
+import com.dictionary.region.customExceptionAdviceHandler.CustomExceptionHandler;
 import com.dictionary.region.entity.Region;
 import com.dictionary.region.service.RegionService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1")
 @RequiredArgsConstructor
+@CustomExceptionHandler
 public class RegionController {
 
     private final RegionService regionService;
