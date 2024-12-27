@@ -2,6 +2,7 @@ package com.dictionary.region.repository;
 
 import com.dictionary.region.entity.Region;
 import com.dictionary.region.exception.SqlProcessingException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class RegionRepositoryImpl implements RegionRepository {
 
     private final static String INSERT_REGION = "INSERT INTO region(name, code) VALUES (?, ?)";
@@ -22,10 +24,6 @@ public class RegionRepositoryImpl implements RegionRepository {
     private final static String GET_ALL_REGION = "SELECT * FROM region";
 
     private final DataSource dataSource;
-
-    public RegionRepositoryImpl(DataSource dataSource) {
-        this.dataSource = dataSource;
-    }
 
     @Override
     public void save(Region region) {
