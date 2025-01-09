@@ -14,4 +14,6 @@ public interface RegionRepository {
     void deleteById(Long id);
 
     List<Region> findAll();
+
+    void deleteAll();
 }

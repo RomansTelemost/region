@@ -22,6 +22,7 @@ public class RegionRepositoryImpl implements RegionRepository {
     private final static String GET_REGION = "SELECT * FROM region WHERE code = ?";
     private final static String DELETE_BY_ID = "DELETE FROM region where code = ?";
     private final static String GET_ALL_REGION = "SELECT * FROM region";
+    private final static String DELETE_ALL = "DELETE FROM region";
 
     private final DataSource dataSource;
 
@@ -31,7 +32,7 @@ public class RegionRepositoryImpl implements RegionRepository {
              PreparedStatement statement = connection.prepareStatement(INSERT_REGION)) {
 
             statement.setString(1, region.getName());
-            statement.setInt(2, region.getCode());
+            statement.setLong(2, region.getCode());
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -52,7 +53,7 @@ public class RegionRepositoryImpl implements RegionRepository {
 
             Region region = new Region();
             region.setName(results.getString(1));
-            region.setCode(results.getInt(2));
+            region.setCode(results.getLong(2));
             return Optional.of(region);
         } catch (SQLException e) {
             throw new SqlProcessingException(e);
@@ -79,12 +80,22 @@ public class RegionRepositoryImpl implements RegionRepository {
             while (resultSet.next()) {
                 Region region = new Region();
                 region.setName(resultSet.getString(1));
-                region.setCode(resultSet.getInt(2));
+                region.setCode(resultSet.getLong(2));
                 regions.add(region);
             }
         } catch (SQLException e) {
             throw new SqlProcessingException(e);
         }
         return regions;
+    }
+
+    @Override
+    public void deleteAll() {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(DELETE_ALL)) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            throw new SqlProcessingException(e);
+        }
     }
 }
