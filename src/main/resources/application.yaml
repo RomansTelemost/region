@@ -5,4 +5,7 @@ spring:
     password: root
   liquibase:
     change-log: classpath:liquibase/changelog-master.yaml
+server:
+  port: 8080
+
 
