@@ -7,3 +7,4 @@ spring:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
   liquibase:
     change-log: classpath:liquibase/changelog-master.yaml
+repoImpl: jpa

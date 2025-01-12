@@ -1,5 +1,8 @@
 package com.dictionary.region.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,8 +14,14 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 @Setter
+@Entity
 public class Region {
+
+    @Column(name = "name")
     private String name;
+
+    @Id
+    @Column(name = "code")
     private Long code;
 
     @Override

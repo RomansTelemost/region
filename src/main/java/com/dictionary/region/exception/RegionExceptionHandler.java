@@ -1,6 +1,5 @@
-package com.dictionary.region.customExceptionAdviceHandler;
+package com.dictionary.region.exception;
 
-import com.dictionary.region.exception.RegionNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

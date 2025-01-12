@@ -1,4 +1,4 @@
-package com.dictionary.region.customExceptionAdviceHandler;
+package com.dictionary.region.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

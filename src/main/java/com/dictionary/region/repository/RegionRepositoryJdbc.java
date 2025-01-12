@@ -3,6 +3,7 @@ package com.dictionary.region.repository;
 import com.dictionary.region.entity.Region;
 import com.dictionary.region.exception.SqlProcessingException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
@@ -16,7 +17,8 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class RegionRepositoryImpl implements RegionRepository {
+@ConditionalOnProperty(name = "repoImpl", havingValue = "jdbc")
+public class RegionRepositoryJdbc implements RegionRepository {
 
     private final static String INSERT_REGION = "INSERT INTO region(name, code) VALUES (?, ?)";
     private final static String GET_REGION = "SELECT * FROM region WHERE code = ?";
