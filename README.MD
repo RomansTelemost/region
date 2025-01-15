@@ -27,3 +27,12 @@ http://localhost:8081/v3/api-docs
 сервис которой должен быть запущен на порту 5434
 
 "SPRING_PROFILES_ACTIVE=docker" - Запуск контейнера с бд postgres
+
+---------------------------------------------------------
+### Used technologies
+    Java 17
+    Spring Boot 3.3.5
+    PostgreSQL 12 (драйвер JDBC 42.5.1)
+    Liquibase 4.15.0
+    Lombok 1.18.22
+    docker container test
